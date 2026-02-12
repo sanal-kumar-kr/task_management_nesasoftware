@@ -21,7 +21,7 @@ def admin_login(request):
     return render(request, 'custom_admin_panel/login.html')
 
 
-@login_required
+@login_required()
 def dashboard(request):
     if request.user.role == 'SuperAdmin':
         tasks = Task.objects.all()

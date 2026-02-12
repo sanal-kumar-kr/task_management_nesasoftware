@@ -140,16 +140,16 @@ def assign_admin_view(request):
             admin = form.cleaned_data['admin']
             user.assigned_admin = admin
             user.save()
-            return redirect('assign-admin') 
+            return redirect('user_list') 
     else:
         form = AssignAdminForm()
     return render(request, "custom_admin_panel/assign_admin.html", {"form": form})
 
 @login_required
-def user_admin_list_view(request):
+def user_admin_list_view(request,uuid):
     if request.user.role != "SuperAdmin":
         raise PermissionDenied("Only superadmin can view this page.")
-    users = User.objects.filter(role='User').select_related('assigned_admin')
+    users = User.objects.filter(role='User',assigned_admin=uuid).select_related('assigned_admin')
     return render(
         request,
         "custom_admin_panel/user_admin_list.html",
@@ -157,23 +157,22 @@ def user_admin_list_view(request):
     )
 
 
-
-@login_required
 def assign_role(request, uuid):
     if request.user.role != 'SuperAdmin':
-        return redirect('dashboard')  
-
+        return redirect('dashboard')
     user = get_object_or_404(User, id=uuid)
-
     if request.method == "POST":
         new_role = request.POST.get("role")
         if new_role in ['SuperAdmin', 'Admin', 'User']:
             user.role = new_role
-            user.save()
+            user.groups.clear()
+            group = Group.objects.get(name=new_role)
+            user.groups.add(group)
             if new_role == 'Admin':
                 user.assigned_admin = None
-                user.save()
+            user.save()
         return redirect('user_list')
+
     return render(request, "custom_admin_panel/assign_role.html", {
         "target_user": user
     })

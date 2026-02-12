@@ -53,7 +53,7 @@
                                 </a>
 
                                 {% if user.role == "Admin" %}
-                                <a href="{% url 'user-admin-list' %}"
+                                <a href="{% url 'user-admin-list' user.id %}"
                                    class="btn btn-sm btn-outline-dark rounded-pill px-3">
                                     Assigned Users
                                 </a>

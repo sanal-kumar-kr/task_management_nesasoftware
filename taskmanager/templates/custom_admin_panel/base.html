@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Task Management Admin Panel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+    <div class="container-fluid px-4">
+        <a class="navbar-brand fw-bold text-uppercase" href="#">Admin Panel</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-end" id="navbarContent">
+            <ul class="navbar-nav align-items-lg-center gap-lg-2">
+
+                <li class="nav-item">
+                    <a href="{% url 'dashboard' %}" class="nav-link px-3">
+                        Dashboard
+                    </a>
+                </li>
+
+                {% if request.user.is_superuser %}
+                <li class="nav-item">
+                    <a href="{% url 'user_list' %}" class="nav-link px-3 text-warning fw-semibold">
+                        Manage Users
+                    </a>
+                </li>
+                {% endif %}
+
+                <li class="nav-item">
+                    <a href="{% url 'task_list' %}" class="nav-link px-3">
+                        Tasks
+                    </a>
+                </li>
+
+                <li class="nav-item ms-lg-3">
+                    <a href="{% url 'admin_logout' %}" class="btn btn-danger btn-sm px-3 rounded-pill">
+                        Logout
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container py-4">
+    <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-body p-4">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

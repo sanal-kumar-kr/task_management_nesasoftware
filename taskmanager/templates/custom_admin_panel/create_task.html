@@ -1,0 +1,60 @@
+{% extends "custom_admin_panel/base.html" %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-lg-7 col-md-9">
+
+        <div class="card shadow border-0 rounded-4">
+            <div class="card-header bg-success text-white text-center rounded-top-4 py-3">
+                <h4 class="mb-0 fw-semibold">Create New Task</h4>
+            </div>
+
+            <div class="card-body p-4">
+
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Title</label>
+                        <input type="text" name="title" placeholder="Enter task title"
+                               class="form-control form-control-lg rounded-3 shadow-sm" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Description</label>
+                        <textarea name="description" rows="4"
+                                  placeholder="Enter task description"
+                                  class="form-control rounded-3 shadow-sm" required></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Due Date</label>
+                        <input type="date" name="due_date"
+                               class="form-control rounded-3 shadow-sm" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">Assign To</label>
+                        <select name="assigned_to" class="form-select rounded-3 shadow-sm">
+                            {% for user in users %}
+                                <option value="{{ user.id }}">{{ user.username }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="d-grid">
+                        <button class="btn btn-primary btn-lg rounded-pill fw-semibold">
+                            Create Task
+                        </button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
